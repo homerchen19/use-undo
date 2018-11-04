@@ -1,0 +1,32 @@
+{
+  "name": "use-undo",
+  "version": "0.0.1",
+  "description": "undo/redo functionality with React Hooks",
+  "license": "MIT",
+  "author": "xxhomey19",
+  "homepage": "https://github.com/xxhomey19/use-undo#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xxhomey19/use-undo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xxhomey19/use-undo/issues"
+  },
+  "main": "lib/use-undo.js",
+  "umd:main": "lib/use-undo.umd.js",
+  "module": "lib/use-undo.m.js",
+  "scripts": {
+    "build": "rimraf lib && microbundle -o lib/ --name use-undo --sourcemap false",
+    "prepublishOnly": "yarn build"
+  },
+  "files": [
+    "lib"
+  ],
+  "peerDependencies": {
+    "react": "^16.7.0-alpha.0"
+  },
+  "devDependencies": {
+    "microbundle": "^0.6.0",
+    "rimraf": "^2.6.2"
+  }
+}
