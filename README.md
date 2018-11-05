@@ -2,6 +2,11 @@
 
 undo/redo functionality with React [Hooks](https://reactjs.org/docs/hooks-intro.html).
 
+<p>
+  <a target="_blank" href="https://npmjs.org/package/use-undo" title="NPM version"><img src="https://img.shields.io/npm/v/use-undo.svg"></a>
+  <a target="_blank" href="http://makeapullrequest.com" title="PRs Welcome"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg"></a>
+</p>
+
 <p align="center">
 <img width="1280" alt="screensho" src="https://user-images.githubusercontent.com/12113222/47952303-3c690d80-dfc1-11e8-9df3-7d00443a4487.gif" />
 </p>
@@ -100,7 +105,7 @@ The state structure looks like:
 }
 ```
 
-It stores all states we need. To operate on this state, there are three functions in [`actions`](#actions) (`set`, `undo` and `redo`) that dispatch defined types and necessary value.
+It stores all states we need. To operate on this state, there are three functions in [`actions`](#actions) (`set`, `undo` and `redo`) that dispatch defined types and necessary value.
 
 ## Related repo
 
