@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useCallback } from 'react';
 
 const UNDO = 'UNDO';
 const REDO = 'REDO';
@@ -15,21 +15,26 @@ const reducer = (state, action) => {
 
   switch (action.type) {
     case UNDO:
-      const previous = past.pop();
+      const previous = past[past.length - 1];
+      const newPast = past.slice(0, past.length - 1);
+
       return {
-        past,
+        past: newPast,
         present: previous,
         future: [present, ...future],
       };
     case REDO:
-      const next = future.shift();
+      const next = future[0];
+      const newFuture = future.slice(1);
+
       return {
         past: [...past, present],
         present: next,
-        future,
+        future: newFuture,
       };
     case SET:
       const { newPresent } = action;
+
       if (newPresent === present) {
         return state;
       }
@@ -49,17 +54,25 @@ const useUndo = initialPresent => {
 
   const canUndo = state.past.length !== 0;
   const canRedo = state.future.length !== 0;
-  const undo = () => {
-    if (canUndo) {
-      dispatch({ type: UNDO });
-    }
-  };
-  const redo = () => {
-    if (canRedo) {
-      dispatch({ type: REDO });
-    }
-  };
-  const set = newPresent => dispatch({ type: SET, newPresent });
+  const undo = useCallback(
+    () => {
+      if (canUndo) {
+        dispatch({ type: UNDO });
+      }
+    },
+    [canUndo, dispatch]
+  );
+  const redo = useCallback(
+    () => {
+      if (canRedo) {
+        dispatch({ type: REDO });
+      }
+    },
+    [canRedo, dispatch]
+  );
+  const set = useCallback(newPresent => dispatch({ type: SET, newPresent }), [
+    dispatch,
+  ]);
 
   return [state, { set, undo, redo, canUndo, canRedo }];
 };
