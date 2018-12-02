@@ -24,7 +24,8 @@
     "test:watch": "jest --watch"
   },
   "files": [
-    "lib"
+    "lib",
+    "index.d.ts"
   ],
   "devDependencies": {
     "@babel/core": "^7.1.6",
