@@ -6,41 +6,74 @@ import useUndo from '../index';
 const UndoComponent = React.memo(({ disabled }) => {
   const [
     countState,
-    { set: setCount, undo: undoCount, redo: redoCount, canUndo, canRedo },
+    {
+      set: setCount,
+      reset: resetCount,
+      undo: undoCount,
+      redo: redoCount,
+      canUndo,
+      canRedo,
+    },
   ] = useUndo(0);
   const { present: presentCount } = countState;
 
   return (
     <div>
-      <p>count: {presentCount}</p>
-      <button key="unchange" onClick={() => setCount(presentCount)}>
+      <p data-testid="count">count: {presentCount}</p>
+      <button
+        key="unchange"
+        data-testid="unchange"
+        onClick={() => setCount(presentCount)}
+      >
         unchange
       </button>
-      <button key="increment" onClick={() => setCount(presentCount + 1)}>
+      <button
+        key="increment"
+        data-testid="increment"
+        onClick={() => setCount(presentCount + 1)}
+      >
         +
       </button>
-      <button key="decrement" onClick={() => setCount(presentCount - 1)}>
+      <button
+        key="decrement"
+        data-testid="decrement"
+        onClick={() => setCount(presentCount - 1)}
+      >
         -
       </button>
-      <button key="undo" onClick={undoCount} disabled={disabled && !canUndo}>
+      <button
+        key="undo"
+        data-testid="undo"
+        onClick={undoCount}
+        disabled={disabled && !canUndo}
+      >
         undo
       </button>
-      <button key="redo" onClick={redoCount} disabled={disabled && !canRedo}>
+      <button
+        key="redo"
+        data-testid="redo"
+        onClick={redoCount}
+        disabled={disabled && !canRedo}
+      >
         redo
+      </button>
+      <button key="reset" data-testid="reset" onClick={() => resetCount(0)}>
+        reset to 0
       </button>
     </div>
   );
 });
 
 const setup = (defaultDisabled = true) => {
-  const { getByText } = render(<UndoComponent disabled={defaultDisabled} />);
+  const { getByTestId } = render(<UndoComponent disabled={defaultDisabled} />);
 
-  const count = getByText('count:', { exact: false });
-  const unchangeButton = getByText('unchange');
-  const incrementButton = getByText('+');
-  const decrementButton = getByText('-');
-  const undoButton = getByText('undo');
-  const redoButton = getByText('redo');
+  const count = getByTestId('count');
+  const unchangeButton = getByTestId('unchange');
+  const incrementButton = getByTestId('increment');
+  const decrementButton = getByTestId('decrement');
+  const undoButton = getByTestId('undo');
+  const redoButton = getByTestId('redo');
+  const resetButton = getByTestId('reset');
 
   return {
     count,
@@ -49,6 +82,7 @@ const setup = (defaultDisabled = true) => {
     decrementButton,
     undoButton,
     redoButton,
+    resetButton,
   };
 };
 
@@ -67,6 +101,7 @@ describe('use-undo', () => {
       decrementButton,
       undoButton,
       redoButton,
+      resetButton,
     } = setup();
 
     expect(count.textContent).toBe('count: 0');
@@ -121,6 +156,14 @@ describe('use-undo', () => {
     expect(count.textContent).toBe('count: 0');
     expect(undoButton.disabled).toBe(true);
     expect(redoButton.disabled).toBe(false);
+
+    fireEvent.click(incrementButton);
+    fireEvent.click(incrementButton);
+    fireEvent.click(resetButton);
+
+    expect(count.textContent).toBe('count: 0');
+    expect(undoButton.disabled).toBe(true);
+    expect(redoButton.disabled).toBe(true);
   });
 
   it('present count should not be changed when canUndo or canRedo is false', () => {

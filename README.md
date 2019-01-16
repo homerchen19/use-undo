@@ -35,7 +35,14 @@ import useUndo from 'use-undo';
 const App = () => {
   const [
     countState,
-    { set: setCount, undo: undoCount, redo: redoCount, canUndo, canRedo },
+    {
+      set: setCount,
+      reset: resetCount,
+      undo: undoCount,
+      redo: redoCount,
+      canUndo,
+      canRedo,
+    },
   ] = useUndo(0);
   const { present: presentCount } = countState;
 
@@ -53,6 +60,9 @@ const App = () => {
       </button>
       <button key="redo" onClick={redoCount} disabled={!canRedo}>
         redo
+      </button>
+      <button key="reset" onClick={() => resetCount(0)}>
+        reset to 0
       </button>
     </div>
   );
@@ -87,6 +97,7 @@ const [state, actions] = useUndo(initialState);
 | Key     |    Type    | Description                                                                              |
 | ------- | :--------: | ---------------------------------------------------------------------------------------- |
 | set     | `function` | Assign a new value to `present`.                                                         |
+| reset   | `function` | Clear `past` array and `future` array. Assign a new value to `present`.                  |
 | undo    | `function` | See [handling-undo](https://redux.js.org/recipes/implementingundohistory#handling-undo). |
 | redo    | `function` | See [handling-redo](https://redux.js.org/recipes/implementingundohistory#handling-redo). |
 | canUndo | `boolean`  | Check whether `state.undo.length` is `0`.                                                |
