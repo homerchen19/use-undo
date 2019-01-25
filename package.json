@@ -54,7 +54,7 @@
     "resetModules": true,
     "resetMocks": true
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "16.8.0-alpha.1",
     "react-dom": "16.8.0-alpha.1"
   },
