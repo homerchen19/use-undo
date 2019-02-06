@@ -11,10 +11,6 @@ undo/redo functionality with React [Hooks](https://reactjs.org/docs/hooks-intro.
 <img width="1280" alt="screensho" src="https://user-images.githubusercontent.com/12113222/47952303-3c690d80-dfc1-11e8-9df3-7d00443a4487.gif" />
 </p>
 
-## Requirement ⚠️
-
-To use `useUndo`, you have to use at minimum `react@16.7.0-alpha.0`. React Hooks is currently at **[RFC](https://github.com/reactjs/rfcs/pull/68)** stage.
-
 ## Installation
 
 ```sh
