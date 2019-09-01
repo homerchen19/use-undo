@@ -1,6 +1,6 @@
 {
   "name": "use-undo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "undo/redo functionality with React Hooks",
   "license": "MIT",
   "author": "xxhomey19",
