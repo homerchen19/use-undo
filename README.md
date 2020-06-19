@@ -90,18 +90,18 @@ const [state, actions] = useUndo(initialState);
 
 ##### Type: `Object`
 
-| Key     |    Type    | Description                                                                              |
-| ------- | :--------: | ---------------------------------------------------------------------------------------- |
-| set     | `function` | Assign a new value to `present`.                                                         |
-| reset   | `function` | Clear `past` array and `future` array. Assign a new value to `present`.                  |
-| undo    | `function` | See [handling-undo](https://redux.js.org/recipes/implementingundohistory#handling-undo). |
-| redo    | `function` | See [handling-redo](https://redux.js.org/recipes/implementingundohistory#handling-redo). |
-| canUndo | `boolean`  | Check whether `state.undo.length` is `0`.                                                |
-| canRedo | `boolean`  | Check whether `state.redo.length` is `0`.                                                |
+| Key     |    Type    | Description                                                                                |
+| ------- | :--------: | ------------------------------------------------------------------------------------------ |
+| set     | `function` | Assign a new value to `present`.                                                           |
+| reset   | `function` | Clear `past` array and `future` array. Assign a new value to `present`.                    |
+| undo    | `function` | See [handling-undo](https://redux.js.org/recipes/implementing-undo-history#handling-undo). |
+| redo    | `function` | See [handling-redo](https://redux.js.org/recipes/implementing-undo-history#handling-redo). |
+| canUndo | `boolean`  | Check whether `state.undo.length` is `0`.                                                  |
+| canRedo | `boolean`  | Check whether `state.redo.length` is `0`.                                                  |
 
 ## How does it work?
 
-Refer to [_Redux Implementing Undo History_](https://redux.js.org/recipes/implementingundohistory), `use-undo` implements the same concect with [`useReducer`](https://reactjs.org/docs/hooks-reference.html#usereducer).  
+Refer to [_Redux Implementing Undo History_](hhttps://redux.js.org/recipes/implementing-undo-history), `use-undo` implements the same concect with [`useReducer`](https://reactjs.org/docs/hooks-reference.html#usereducer).  
 The state structure looks like:
 
 ```js
@@ -120,4 +120,4 @@ It stores all states we need. To operate on this state, there are three function
 
 ## License
 
-MIT © [xxhomey19](https://github.com/xxhomey19)
+MIT © [homerchen19](https://github.com/homerchen19)
