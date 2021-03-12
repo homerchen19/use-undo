@@ -38,7 +38,10 @@ const reducer = (state, action) => {
     }
 
     case SET: {
-      const { newPresent } = action;
+      let { newPresent } = action;
+      if (typeof newPresent === 'function') {
+        newPresent = newPresent(present);
+      }
 
       if (newPresent === present) {
         return state;
@@ -51,7 +54,10 @@ const reducer = (state, action) => {
     }
 
     case RESET: {
-      const { newPresent } = action;
+      let { newPresent } = action;
+      if (typeof newPresent === 'function') {
+        newPresent = newPresent(present);
+      }
 
       return {
         past: [],
