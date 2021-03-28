@@ -74,19 +74,19 @@ const useUndo = initialPresent => {
     if (canUndo) {
       dispatch({ type: UNDO });
     }
-  }, [canUndo]);
+  }, [canUndo, dispatch]);
   const redo = useCallback(() => {
     if (canRedo) {
       dispatch({ type: REDO });
     }
-  }, [canRedo]);
+  }, [canRedo, dispatch]);
   const set = useCallback(
     newPresent => dispatch({ type: SET, newPresent }),
-    []
+    [dispatch]
   );
   const reset = useCallback(
     newPresent => dispatch({ type: RESET, newPresent }),
-    []
+    [dispatch]
   );
 
   return [state, { set, reset, undo, redo, canUndo, canRedo }];
