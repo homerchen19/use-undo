@@ -3,7 +3,7 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 
 import useUndo from '../index';
 
-const UndoComponent = React.memo(({ disabled }) => {
+const UndoComponent = ({ disabled }: { disabled: boolean }) => {
   const [
     countState,
     {
@@ -62,18 +62,18 @@ const UndoComponent = React.memo(({ disabled }) => {
       </button>
     </div>
   );
-});
+};
 
 const setup = (defaultDisabled = true) => {
   const { getByTestId } = render(<UndoComponent disabled={defaultDisabled} />);
 
   const count = getByTestId('count');
-  const unchangeButton = getByTestId('unchange');
-  const incrementButton = getByTestId('increment');
-  const decrementButton = getByTestId('decrement');
-  const undoButton = getByTestId('undo');
-  const redoButton = getByTestId('redo');
-  const resetButton = getByTestId('reset');
+  const unchangeButton = getByTestId('unchange') as HTMLButtonElement;
+  const incrementButton = getByTestId('increment') as HTMLButtonElement;
+  const decrementButton = getByTestId('decrement') as HTMLButtonElement;
+  const undoButton = getByTestId('undo') as HTMLButtonElement;
+  const redoButton = getByTestId('redo') as HTMLButtonElement;
+  const resetButton = getByTestId('reset') as HTMLButtonElement;
 
   return {
     count,
@@ -167,14 +167,7 @@ describe('use-undo', () => {
   });
 
   it('present count should not be changed when canUndo or canRedo is false', () => {
-    const {
-      count,
-      unchangeButton,
-      incrementButton,
-      decrementButton,
-      undoButton,
-      redoButton,
-    } = setup(false);
+    const { count, undoButton, redoButton } = setup(false);
 
     expect(count.textContent).toBe('count: 0');
     expect(undoButton.disabled).toBe(false);
