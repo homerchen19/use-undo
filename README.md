@@ -19,9 +19,7 @@ yarn add use-undo
 
 ## Usage
 
-<a href="https://codesandbox.io/s/5v9yoz7xn4" target="_blank">
-  <img alt="Edit 5v9yoz7xn4" src="https://codesandbox.io/static/img/play-codesandbox.svg">
-</a>
+[![Edit use-undo-demo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/use-undo-demo-hifeo?fontsize=14&hidenavigation=1&theme=dark&view=editor)
 
 ```js
 import React from 'react';
@@ -63,9 +61,6 @@ const App = () => {
     </div>
   );
 };
-
-const rootElement = document.getElementById('root');
-ReactDOM.render(<App />, rootElement);
 ```
 
 ## API
