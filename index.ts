@@ -38,6 +38,10 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
 
   switch (action.type) {
     case ActionType.Undo: {
+      if (past.length === 0) {
+        return state;
+      }
+
       const previous = past[past.length - 1];
       const newPast = past.slice(0, past.length - 1);
 
@@ -49,6 +53,9 @@ const reducer = <T>(state: State<T>, action: Action<T>) => {
     }
 
     case ActionType.Redo: {
+      if (future.length === 0) {
+        return state;
+      }
       const next = future[0];
       const newFuture = future.slice(1);
 

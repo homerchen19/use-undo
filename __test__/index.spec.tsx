@@ -16,6 +16,14 @@ const UndoComponent = ({ disabled }: { disabled: boolean }) => {
     },
   ] = useUndo(0);
   const { present: presentCount } = countState;
+  const doubleRedoCount = () => {
+    redoCount();
+    redoCount();
+  };
+  const doubleUndoCount = () => {
+    undoCount();
+    undoCount();
+  };
 
   return (
     <div>
@@ -57,6 +65,22 @@ const UndoComponent = ({ disabled }: { disabled: boolean }) => {
       >
         redo
       </button>
+      <button
+        key="double undo"
+        data-testid="double undo"
+        onClick={doubleUndoCount}
+        disabled={disabled && !canUndo}
+      >
+        double undo
+      </button>
+      <button
+        key="double redo"
+        data-testid="double redo"
+        onClick={doubleRedoCount}
+        disabled={disabled && !canRedo}
+      >
+        double redo
+      </button>
       <button key="reset" data-testid="reset" onClick={() => resetCount(0)}>
         reset to 0
       </button>
@@ -73,6 +97,8 @@ const setup = (defaultDisabled = true) => {
   const decrementButton = getByTestId('decrement') as HTMLButtonElement;
   const undoButton = getByTestId('undo') as HTMLButtonElement;
   const redoButton = getByTestId('redo') as HTMLButtonElement;
+  const doubleUndoButton = getByTestId('double undo') as HTMLButtonElement;
+  const doubleRedoButton = getByTestId('double redo') as HTMLButtonElement;
   const resetButton = getByTestId('reset') as HTMLButtonElement;
 
   return {
@@ -82,6 +108,8 @@ const setup = (defaultDisabled = true) => {
     decrementButton,
     undoButton,
     redoButton,
+    doubleUndoButton,
+    doubleRedoButton,
     resetButton,
   };
 };
@@ -180,5 +208,35 @@ describe('use-undo', () => {
     fireEvent.click(redoButton);
 
     expect(count.textContent).toBe('count: 0');
+  });
+
+  describe('when it can undo once', () => {
+    describe('when calling undo multiple times in succession', () => {
+      it('should return to the initial state', () => {
+        const { count, doubleUndoButton, incrementButton } = setup();
+
+        fireEvent.click(incrementButton);
+
+        fireEvent.click(doubleUndoButton);
+
+        expect(count.textContent).toBe('count: 0');
+      });
+    });
+  });
+
+  describe('when it can redo once', () => {
+    describe('when calling redo multiple times in succession', () => {
+      it('should return to the last state', () => {
+        const { count, undoButton, doubleRedoButton, incrementButton } =
+          setup();
+
+        fireEvent.click(incrementButton);
+        fireEvent.click(undoButton);
+
+        fireEvent.click(doubleRedoButton);
+
+        expect(count.textContent).toBe('count: 1');
+      });
+    });
   });
 });
