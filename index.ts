@@ -8,7 +8,7 @@ enum ActionType {
 }
 
 export interface Actions<T> {
-  set: (newPresent: T) => void;
+  set: (newPresent: T, checkpoint?: boolean) => void;
   reset: (newPresent: T) => void;
   undo: () => void;
   redo: () => void;
@@ -18,6 +18,7 @@ export interface Actions<T> {
 
 interface Action<T> {
   type: ActionType;
+  historyCheckpoint?: boolean;
   newPresent?: T;
 }
 
@@ -33,65 +34,78 @@ const initialState = {
   future: [],
 };
 
-const reducer = <T>(state: State<T>, action: Action<T>) => {
-  const { past, present, future } = state;
-
-  switch (action.type) {
-    case ActionType.Undo: {
-      if (past.length === 0) {
-        return state;
-      }
-
-      const previous = past[past.length - 1];
-      const newPast = past.slice(0, past.length - 1);
-
-      return {
-        past: newPast,
-        present: previous,
-        future: [present, ...future],
-      };
-    }
-
-    case ActionType.Redo: {
-      if (future.length === 0) {
-        return state;
-      }
-      const next = future[0];
-      const newFuture = future.slice(1);
-
-      return {
-        past: [...past, present],
-        present: next,
-        future: newFuture,
-      };
-    }
-
-    case ActionType.Set: {
-      const { newPresent } = action;
-
-      if (newPresent === present) {
-        return state;
-      }
-      return {
-        past: [...past, present],
-        present: newPresent,
-        future: [],
-      };
-    }
-
-    case ActionType.Reset: {
-      const { newPresent } = action;
-
-      return {
-        past: [],
-        present: newPresent,
-        future: [],
-      };
-    }
-  }
+type Options = {
+  useCheckpoints?: boolean;
 };
 
-const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
+const useUndo = <T>(initialPresent: T, opts = {}): [State<T>, Actions<T>] => {
+  const { useCheckpoints }: Options = {
+    useCheckpoints: false,
+    ...opts,
+  };
+
+  const reducer = <T>(state: State<T>, action: Action<T>) => {
+    const { past, present, future } = state;
+
+    switch (action.type) {
+      case ActionType.Undo: {
+        if (past.length === 0) {
+          return state;
+        }
+
+        const previous = past[past.length - 1];
+        const newPast = past.slice(0, past.length - 1);
+
+        return {
+          past: newPast,
+          present: previous,
+          future: [present, ...future],
+        };
+      }
+
+      case ActionType.Redo: {
+        if (future.length === 0) {
+          return state;
+        }
+        const next = future[0];
+        const newFuture = future.slice(1);
+
+        return {
+          past: [...past, present],
+          present: next,
+          future: newFuture,
+        };
+      }
+
+      case ActionType.Set: {
+        const isNewCheckpoint = useCheckpoints
+          ? !!action.historyCheckpoint
+          : true;
+        const { newPresent } = action;
+
+        if (newPresent === present) {
+          return state;
+        }
+
+        return {
+          past: isNewCheckpoint == false ? past : [...past, present],
+          present: newPresent,
+          future: [],
+        };
+      }
+
+      case ActionType.Reset: {
+        const { newPresent } = action;
+
+        return {
+          past: [],
+          present: newPresent,
+          future: [],
+        };
+      }
+    }
+  };
+
   const [state, dispatch] = useReducer(reducer, {
     ...initialState,
     present: initialPresent,
@@ -109,10 +123,13 @@ const useUndo = <T>(initialPresent: T): [State<T>, Actions<T>] => {
       dispatch({ type: ActionType.Redo });
     }
   }, [canRedo]);
-  const set = useCallback(
-    (newPresent: T) => dispatch({ type: ActionType.Set, newPresent }),
-    []
-  );
+  const set = useCallback((newPresent: T, checkpoint = false) => {
+    dispatch({
+      type: ActionType.Set,
+      newPresent,
+      historyCheckpoint: checkpoint,
+    });
+  }, []);
   const reset = useCallback(
     (newPresent: T) => dispatch({ type: ActionType.Reset, newPresent }),
     []
