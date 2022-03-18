@@ -38,7 +38,10 @@ type Options = {
   useCheckpoints?: boolean;
 };
 
-const useUndo = <T>(initialPresent: T, opts = {}): [State<T>, Actions<T>] => {
+const useUndo = <T>(
+  initialPresent: T,
+  opts: Options = {}
+): [State<T>, Actions<T>] => {
   const { useCheckpoints }: Options = {
     useCheckpoints: false,
     ...opts,
@@ -88,7 +91,7 @@ const useUndo = <T>(initialPresent: T, opts = {}): [State<T>, Actions<T>] => {
         }
 
         return {
-          past: isNewCheckpoint == false ? past : [...past, present],
+          past: isNewCheckpoint === false ? past : [...past, present],
           present: newPresent,
           future: [],
         };

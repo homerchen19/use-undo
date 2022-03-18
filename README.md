@@ -63,6 +63,58 @@ const App = () => {
 };
 ```
 
+## Manual Checkpoints
+
+Manual checkpoints are helpful also when you want manual control over checkpoints. For example it is more helpful when you want to handle input type html tag where value needs to be handled alongside the undo and redo functionality should be handled over some conditions.
+
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import useUndo from 'use-undo';
+
+const App = () => {
+  const [
+    countState,
+    {
+      set: setCount,
+      reset: resetCount,
+      undo: undoCount,
+      redo: redoCount,
+      canUndo,
+      canRedo,
+    },
+  ] = useUndo(0, { useCheckpoints: true });
+  const { present: presentCount } = countState;
+
+  return (
+    <div>
+      <p>You clicked {presentCount} times</p>
+      <button key="increment" onClick={() => setCount(presentCount + 1, true)}>
+        WithCheckpoint+
+      </button>
+      <button key="decrement" onClick={() => setCount(presentCount - 1, true)}>
+        WithCheckpoint-
+      </button>
+      <button key="increment" onClick={() => setCount(presentCount + 1, true)}>
+        NoCheckpoint+
+      </button>
+      <button key="decrement" onClick={() => setCount(presentCount - 1, true)}>
+        NoCheckpoint-
+      </button>
+      <button key="undo" onClick={undoCount} disabled={!canUndo}>
+        undo
+      </button>
+      <button key="redo" onClick={redoCount} disabled={!canRedo}>
+        redo
+      </button>
+      <button key="reset" onClick={() => resetCount(0)}>
+        reset to 0
+      </button>
+    </div>
+  );
+};
+```
+
 ## API
 
 ### useUndo
