@@ -95,10 +95,10 @@ const App = () => {
       <button key="decrement" onClick={() => setCount(presentCount - 1, true)}>
         WithCheckpoint-
       </button>
-      <button key="increment" onClick={() => setCount(presentCount + 1, true)}>
+      <button key="increment" onClick={() => setCount(presentCount + 1)}>
         NoCheckpoint+
       </button>
-      <button key="decrement" onClick={() => setCount(presentCount - 1, true)}>
+      <button key="decrement" onClick={() => setCount(presentCount - 1)}>
         NoCheckpoint-
       </button>
       <button key="undo" onClick={undoCount} disabled={!canUndo}>
