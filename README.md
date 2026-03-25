@@ -14,7 +14,7 @@ undo/redo functionality with React [Hooks](https://reactjs.org/docs/hooks-intro.
 ## Installation
 
 ```sh
-yarn add use-undo
+npm install use-undo
 ```
 
 ## Usage
