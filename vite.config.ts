@@ -1,5 +1,4 @@
-/// <reference types="vitest" />
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
@@ -9,7 +8,7 @@ export default defineConfig({
     lib: {
       entry: 'index.ts',
       formats: ['es', 'cjs'],
-      fileName: (format) => `use-undo.${format === 'es' ? 'mjs' : 'cjs'}`,
+      fileName: (format: string) => `use-undo.${format === 'es' ? 'mjs' : 'cjs'}`,
     },
     rollupOptions: {
       external: ['react', 'react-dom'],

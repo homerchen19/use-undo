@@ -92,7 +92,7 @@ const useUndo = <T>(
 
         return {
           past: isNewCheckpoint === false ? past : [...past, present],
-          present: newPresent,
+          present: newPresent as T,
           future: [],
         };
       }
@@ -102,7 +102,7 @@ const useUndo = <T>(
 
         return {
           past: [],
-          present: newPresent,
+          present: newPresent as T,
           future: [],
         };
       }
