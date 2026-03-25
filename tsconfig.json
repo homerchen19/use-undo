@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
+    "types": ["vitest/globals"],
     "allowJs": false,
     "module": "ESNext",
     "target": "ESNext",
     "lib": ["dom", "esnext"],
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "outDir": "lib",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "preserveConstEnums": true,
