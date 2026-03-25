@@ -16,11 +16,11 @@ export interface Actions<T> {
   canRedo: boolean;
 }
 
-interface Action<T> {
-  type: ActionType;
-  historyCheckpoint?: boolean;
-  newPresent?: T;
-}
+type Action<T> =
+  | { type: ActionType.Undo }
+  | { type: ActionType.Redo }
+  | { type: ActionType.Set; newPresent: T; historyCheckpoint?: boolean }
+  | { type: ActionType.Reset; newPresent: T };
 
 export interface State<T> {
   past: T[];
@@ -92,7 +92,7 @@ const useUndo = <T>(
 
         return {
           past: isNewCheckpoint === false ? past : [...past, present],
-          present: newPresent as T,
+          present: newPresent,
           future: [],
         };
       }
@@ -102,7 +102,7 @@ const useUndo = <T>(
 
         return {
           past: [],
-          present: newPresent as T,
+          present: newPresent,
           future: [],
         };
       }
