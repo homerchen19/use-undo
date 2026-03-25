@@ -12,13 +12,23 @@
   "bugs": {
     "url": "https://github.com/homerchen19/use-undo/issues"
   },
-  "source": "index.ts",
-  "main": "lib/use-undo.js",
-  "umd:main": "lib/use-undo.umd.js",
-  "module": "lib/use-undo.m.js",
+  "main": "lib/use-undo.cjs",
+  "module": "lib/use-undo.mjs",
   "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/use-undo.mjs"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/use-undo.cjs"
+      }
+    }
+  },
   "scripts": {
-    "build": "rimraf lib && microbundle -o lib/ --name use-undo --sourcemap false --no-compress",
+    "build": "vite build",
     "prepublishOnly": "pnpm build",
     "preversion": "pnpm test:cov",
     "test": "jest",
@@ -39,14 +49,14 @@
     "@types/react-dom": "^17.0.5",
     "husky": "^6.0.0",
     "jest": "^27.0.3",
-    "microbundle": "^0.13.1",
     "prettier": "^2.3.0",
     "pretty-quick": "^3.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "rimraf": "^3.0.2",
     "ts-jest": "^27.0.1",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.2",
+    "vite": "^8.0.2",
+    "vite-plugin-dts": "^4.5.4"
   },
   "peerDependencies": {
     "react": ">=16.8.6",
